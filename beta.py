@@ -44,6 +44,9 @@ X.plot()
 y.plot()
 plt.ylabel("Monthly returns of AGL and ASX-200 over 5Y")
 plt.show()
+#saves graph to file
+plt.savefig("monthly_returns.png")
+
 
 X1 = sm.add_constant(X)
 
