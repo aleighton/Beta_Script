@@ -1,0 +1,25 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                    AGL   R-squared:                       0.246
+Model:                            OLS   Adj. R-squared:                  0.232
+Method:                 Least Squares   F-statistic:                     18.55
+Date:                Fri, 16 Mar 2018   Prob (F-statistic):           6.60e-05
+Time:                        14:18:04   Log-Likelihood:                 107.67
+No. Observations:                  59   AIC:                            -211.3
+Df Residuals:                      57   BIC:                            -207.2
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0052      0.005      0.997      0.323      -0.005       0.016
+ASX-200        0.6897      0.160      4.307      0.000       0.369       1.010
+==============================================================================
+Omnibus:                        0.410   Durbin-Watson:                   1.747
+Prob(Omnibus):                  0.814   Jarque-Bera (JB):                0.564
+Skew:                           0.037   Prob(JB):                        0.754
+Kurtosis:                       2.527   Cond. No.                         31.0
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
