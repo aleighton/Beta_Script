@@ -9,57 +9,58 @@ import statsmodels.api as sm
 from statsmodels import regression
 from scipy import stats
 
-#load csv files with data, start= 28-02-13, end=28-02-18 for both files (monthly stock data from yahoo finance)
+
+# load csv files with data, start= 28-02-13, end=28-02-18 for both files
+# (monthly stock data from yahoo finance)
+
+# in case there are multiple white spaces
 def colParse(df):
-    cols = df.columns.str.replace('\s+', '_')  # in case there are multiple white spaces
+    cols = df.columns.str.replace('\s+', '_')
     return cols
+
 
 agl = pd.read_csv('agl.csv', parse_dates=True, index_col='Date',)
 asx_200 = pd.read_csv('200.csv', parse_dates=True, index_col='Date')
-#check to see if imported, columns names
-print(agl.columns)
 
-#parse columns and replace spaces with underscore
+# removes white space and replaces with a underscore for referencing in dataframe 
 agl.columns = colParse(agl)
 asx_200.columns = colParse(asx_200)
-print(agl.columns)
 
-# joining the closing prices of the two datasets
+# joining the closing prices of the two datasets for asx200 and AGL
 monthly_prices = pd.concat([agl['Close'], asx_200['Close']], axis=1)
 monthly_prices.columns = ['AGL', 'ASX-200']
 
-# check the head of the dataframe
-print(monthly_prices.head())
-
-# calculate monthly returns
+# calculate monthly returns for asx 200
 monthly_returns = monthly_prices.pct_change(1)
-clean_monthly_returns = monthly_returns.dropna(axis=0)  # drop first missing row
+clean_monthly_returns = monthly_returns.dropna(axis=0)
+# drop first missing row
 
-#places cleaned returns data points into dataset to run linear regression
+# places cleaned returns data points into dataset to run linear regression
 X = clean_monthly_returns['ASX-200']
 y = clean_monthly_returns['AGL']
 
-plt.figure(figsize=(20,10))
+plt.figure(figsize=(20, 10))
 X.plot()
 y.plot()
 plt.ylabel("Monthly returns of AGL and ASX-200 over 5Y")
-plt.show()
+
+
 #saves graph to file
 plt.savefig("monthly_returns.png")
 
-
-X1 = sm.add_constant(X)
-
 # make regression model
+X1 = sm.add_constant(X)
 model = sm.OLS(y, X1)
 
 # fit model and print results
 results = model.fit()
-beta = results.summary()
-
-#slope is also a measure of the beta value
-slope, intercept, r_value, p_value, std_err = stats.linregress(X, y)
-print(slope)
-
+regressionstats = results.summary()
+# saves results to text file
 with open("Beta.txt", "w") as text_file:
-    print(f"{beta}", file=text_file)
+    print(f"{regressionstats}", file=text_file)
+
+# function returns beta of stock as float value
+def findBeta():
+    slope, intercept, r_value, p_value, std_err = stats.linregress(X, y)
+    beta = round(slope, 2)
+    return beta
